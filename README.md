@@ -14,7 +14,7 @@ TimeNoter is an open-source application that helps users manage their time with 
 
 ## Try It Now
 
-Experience TimeNoter on the web: [https://timenoter.example.com](https://timenoter.example.com)
+Experience TimeNoter on the web: [https://timenoter.pl](https://timenoter.pl)
 
 ## Authors
 
