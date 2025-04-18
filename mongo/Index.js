@@ -11,20 +11,13 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const ConnectionString = process.env.CONNECTION_STRING;
+const options = [];
 
 if (!ConnectionString) {
   throw new Error(
     'MongoDB connection string is not defined in environment variables.'
   );
 }
-
-const options = {
-  connectTimeoutMS: 10000, // 10 seconds
-  socketTimeoutMS: 45000, // 45 seconds
-  maxPoolSize: 50,
-  wtimeoutMS: 2500,
-  useNewUrlParser: true,
-};
 
 let client = new MongoClient(ConnectionString, options);
 let clientPromise;
