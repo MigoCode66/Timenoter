@@ -18,7 +18,15 @@ if (!ConnectionString) {
   );
 }
 
-let client = new MongoClient(ConnectionString);
+const options = {
+  connectTimeoutMS: 10000, // 10 seconds
+  socketTimeoutMS: 45000, // 45 seconds
+  maxPoolSize: 50,
+  wtimeoutMS: 2500,
+  useNewUrlParser: true,
+};
+
+let client = new MongoClient(ConnectionString, options);
 let clientPromise;
 
 if (process.env.NODE_ENV !== 'production') {
