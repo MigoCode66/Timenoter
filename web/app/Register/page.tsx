@@ -19,7 +19,7 @@ import {
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import React, { useActionState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { singUp } from '../actions_login_register';
@@ -45,6 +45,25 @@ const LoginPage = () => {
     },
   }); // Initialize the form
 
+  type SignUpFormData = {
+    email: string;
+    username: string;
+    password: string;
+    role?: string; // Add this field
+  };
+
+  const onSubmit: SubmitHandler<{
+    email: string;
+    username: string;
+    password: string;
+  }> = async (data: SignUpFormData) => {
+    const userDataWithRole = {
+      ...data,
+      role: 'user', // or whatever default role you want to set
+    };
+    await singUp(userDataWithRole);
+  };
+
   return (
     <div className="flex justify-center items-center w-screen h-screen">
       <Card className="w-[450px]">
@@ -55,7 +74,7 @@ const LoginPage = () => {
         <CardContent>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(singUp)}
+              onSubmit={form.handleSubmit(onSubmit)}
               className="flex flex-col gap-[5px]"
             >
               <FormField

@@ -18,10 +18,10 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { logIn } from '../actions_login_register';
+import { logIn, userData } from '../actions_login_register';
 
 const LoginPage = () => {
   const formSchema = z.object({
@@ -41,6 +41,14 @@ const LoginPage = () => {
     },
   }); // Initialize the form
 
+  
+    const onSubmit: SubmitHandler<{
+      email: string;
+      password: string;
+    }> = async (data: userData) => {
+      await logIn(data);
+    };
+  
   return (
     <div className="flex justify-center items-center w-screen h-screen">
       <Card className="w-[450px]">
@@ -52,7 +60,7 @@ const LoginPage = () => {
           <Form {...form}>
             <form
               className="flex flex-col gap-[5px]"
-              onSubmit={form.handleSubmit(logIn)}
+              onSubmit={form.handleSubmit(onSubmit)}
             >
               <FormField
                 name="email"

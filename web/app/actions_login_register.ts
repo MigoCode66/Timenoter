@@ -8,7 +8,7 @@ export type userData = {
   username?: string;
   email: string;
   password: string;
-  role: string;
+  role?: string;
 };
 
 export async function singUp(data: userData) {
