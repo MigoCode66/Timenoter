@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@mongo/*": ["../mongo/*"],
+      "@openai/*": ["../openAi/*"]
+    }
+  }
+}
