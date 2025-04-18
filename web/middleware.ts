@@ -6,7 +6,6 @@ export default async function middleware(req: NextRequest) {
   const procetedRoutes = ['/'];
   const publicRoutes = ['/Login', '/Register'];
   const currentPath = req.nextUrl.pathname;
-
   // Check if route is protected
   const isProtectedRoute = procetedRoutes.some((route) =>
     currentPath.startsWith(route)
