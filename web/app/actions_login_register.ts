@@ -40,7 +40,7 @@ export async function logIn(data: userData) {
     .digest('hex');
   const Data = await getUserByData({ email: data.email });
   const user = Data[0];
-  console.log(data, hashedPassword);
+  console.log(Data, hashedPassword);
   if (user?.pasword === hashedPassword) {
     await creteSession(user._id);
   } else {
