@@ -30,6 +30,5 @@ if (process.env.NODE_ENV !== 'production') {
 } else {
   clientPromise = client.connect();
 }
-console.log('Conneection Successful');
 
 export default clientPromise;

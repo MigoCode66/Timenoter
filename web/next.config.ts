@@ -3,32 +3,44 @@ import path from 'path';
 
 const nextConfig: NextConfig = {
   webpack: (config, { isServer }) => {
-    // Add external directories to module resolution
-    config.resolve.modules.push(path.resolve(__dirname, '../mongo'));
-    config.resolve.modules.push(path.resolve(__dirname, '../openAi'));
+    // Handle external packages in server components
+    if (isServer) {
+      config.externals = [...(config.externals || []), 'mongodb'];
+    }
 
-    // Add aliases for better module resolution
+    // Add monorepo package resolution
+    config.resolve.modules = [
+      ...(config.resolve.modules || []),
+      path.resolve(__dirname, '../mongo'),
+      path.resolve(__dirname, '../openAi'),
+      'node_modules',
+    ];
+
+    // Configure aliases
     config.resolve.alias = {
       ...config.resolve.alias,
       '@mongo': path.resolve(__dirname, '../mongo'),
       '@openai': path.resolve(__dirname, '../openAi'),
     };
 
-    // Handle node_modules in production
+    // Handle browser polyfills
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
         path: false,
         os: false,
+        crypto: false,
       };
     }
 
     return config;
   },
-  // Add external directories to transpilation
+  experimental: {
+    // Enable external packages in server components
+
+  },
   transpilePackages: ['mongo', 'openAi'],
-  // Ensure output is standalone
   output: 'standalone',
 };
 
