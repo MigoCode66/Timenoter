@@ -11,7 +11,6 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const ConnectionString = process.env.CONNECTION_STRING;
-const options = [];
 
 if (!ConnectionString) {
   throw new Error(
@@ -19,7 +18,7 @@ if (!ConnectionString) {
   );
 }
 
-let client = new MongoClient(ConnectionString, options);
+let client = new MongoClient(ConnectionString);
 let clientPromise;
 
 if (process.env.NODE_ENV !== 'production') {

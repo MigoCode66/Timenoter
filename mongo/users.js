@@ -1,44 +1,33 @@
-import clientPromise from './Index'; // Fixed typo in import
+import clientPromise from './Index';
 
-let db;
-let client;
-let users;
-
-async function init() {
-  if (db) return;
+export async function getUserByData(data) {
   try {
-    client = await clientPromise; // Fixed typo in clientPromise
-    db = client.db('Data');
-    users = db.collection('Users');
-  } catch (err) {
-    throw new Error('Failed to connect to MongoDB: ' + err);
-  }
-}
+    const client = await clientPromise;
+    const db = client.db('Data');
+    const users = db.collection('Users');
 
-(async () => {
-  await init();
-})();
-
-export async function getUserByData(Data) {
-  // Changed parameter name to camelCase
-  try {
-    const results = await users.find(Data).toArray(); // Simplified object key
-    const simplifiedResults = results.map((user) => ({
+    const results = await users.find(data).toArray();
+    return results.map((user) => ({
       ...user,
-      _id: user._id.toString(), // Convert _id to a simple string value
+      _id: user._id.toString(),
     }));
-    return simplifiedResults;
-  } catch (err) {
-    return 'Failed to get user by email: ' + err;
+  } catch (error) {
+    console.error('Failed to get user:', error);
+    throw new Error('Failed to get user by email: ' + error.message);
   }
 }
 
 export async function createUser(userData) {
-  // Fixed typo in function name
   try {
-    const data = await users.insertOne(userData);
-    return data;
-  } catch (err) {
-    throw new Error('Failed to create user: ' + err);
+    const client = await clientPromise;
+    const db = client.db('Data');
+    const users = db.collection('Users');
+
+    const result = await users.insertOne(userData);
+    const createdUser = await users.findOne({ _id: result.insertedId });
+    return [createdUser]; // Return array to maintain compatibility
+  } catch (error) {
+    console.error('Failed to create user:', error);
+    throw new Error('Failed to create user: ' + error.message);
   }
 }
