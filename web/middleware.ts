@@ -4,8 +4,20 @@ import { decrypt } from './lib/session';
 
 export default async function middleware(req: NextRequest) {
   const procetedRoutes = ['/'];
+  const publicRoutes = ['/Login', '/Register'];
   const currentPath = req.nextUrl.pathname;
-  const isProtectedRoute = procetedRoutes.includes(currentPath);
+
+  // Check if route is protected
+  const isProtectedRoute = procetedRoutes.some((route) =>
+    currentPath.startsWith(route)
+  );
+
+  // Don't check session for public routes
+  if (publicRoutes.some((route) => currentPath.startsWith(route))) {
+    return NextResponse.next();
+  }
+
+  // Don't check session for public routes
 
   if (isProtectedRoute) {
     const cookie = (await cookies()).get('session')?.value;
